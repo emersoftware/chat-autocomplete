@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useCompletion } from 'ai/react';
 import { useRef } from 'react';
-import { start } from 'repl';
 
 export default function Completion() {
   const { setInput, input, complete, isLoading } = useCompletion({
