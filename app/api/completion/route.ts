@@ -16,7 +16,7 @@ export async function POST(req: Request) {
 
   const response = await openai.completions.create({
     model: 'gpt-3.5-turbo-instruct-0914',
-    temperature: 1,
+    temperature: 0.33,
     max_tokens: 24,
     stream: true,
     prompt: "Continue the following sentence like an User input: " + prompt,
