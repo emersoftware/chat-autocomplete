@@ -18,7 +18,11 @@ export async function POST(req: Request) {
     model: 'gpt-3.5-turbo-instruct',
     max_tokens: 24,
     stream: true,
-    prompt,
+    prompt: `Complete the following sentence in spanish:
+      User: El amor es un
+      Completion: sentimiento hermoso
+      User: ${prompt}
+      Completion:`,
   });
 
   

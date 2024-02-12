@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { useCompletion } from 'ai/react';
 import { useRef } from 'react';
+import { start } from 'repl';
 
 export default function Completion() {
-  const { completion, setInput, input, complete, isLoading } = useCompletion({
+  const { setInput, input, complete, isLoading } = useCompletion({
     api: '/api/completion',
     onFinish(prompt, completion) {
       setCompletionText(completion);
@@ -14,30 +15,53 @@ export default function Completion() {
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  const divStyle = {
-    minHeight: '100px',
-    padding: '10px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    width: '80%',
-    margin: '0 auto',
-    marginTop: '10px'
-  }
-
   const [completionText, setCompletionText] = useState('');
   const [userText, setUserText] = useState('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Tab') {
       e.preventDefault();
-      setUserText(userText + completionText); // Agrega el texto de autocompletado al texto del usuario
-      setCompletionText(''); // Limpia el texto de autocompletado
+      setUserText(userText + completionText);
+      setCompletionText('');
+      if (divRef.current) {
+        setEndOfContentEditable(divRef.current);
+      }
+    } else {
+      setCompletionText('');
+    }
+  }
+
+  function setEndOfContentEditable(contentEditableElement: HTMLElement) {
+    let range,selection;
+    if(document.createRange) { 
+      range = document.createRange();
+      range.selectNodeContents(contentEditableElement); 
+      range.collapse(false); 
+      selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
     }
   }
   
+  function setEndOfUserText() {
+    if (divRef.current?.firstChild) {
+      const selection = window.getSelection();
+      const range = document.createRange();
+      range.selectNodeContents(divRef.current.firstChild);
+      range.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  }
+
   useEffect(() => {
     if (divRef.current) {
-      divRef.current.innerHTML = `${userText}<span contenteditable="false" class='text-black/50'>${completionText}</span>`;
+      if (completionText === '') {
+        divRef.current.innerHTML = `${userText}`;
+      } else {
+        divRef.current.innerHTML = `${userText}<span class='text-black/50'>${completionText}</span>`;
+      }
+      setEndOfUserText();
     }
   }, [userText, completionText]);
 
@@ -47,8 +71,8 @@ export default function Completion() {
       setInput(divRef.current.innerText);
       setUserText(divRef.current.innerText);
     }
+    setCompletionText('');
     complete(input);
-    setCompletionText(completion);  
   }
 
   return (
@@ -56,9 +80,8 @@ export default function Completion() {
       <div className="flex flex-row items-start">
         <div
           contentEditable="plaintext-only"
-          className="text-black bg-white w-full"
+          className="text-black rounded-lg p-4 mx-auto bg-white w-2/3 min-h-32"
           onKeyDown={handleKeyDown}
-          style={divStyle}
           suppressContentEditableWarning={true}
           ref={divRef}
         />
