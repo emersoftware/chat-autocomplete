@@ -15,11 +15,11 @@ export async function POST(req: Request) {
   const { prompt } = await req.json();
 
   const response = await openai.completions.create({
-    model: 'gpt-3.5-turbo-instruct',
-    temperature: 0.5,
+    model: 'gpt-3.5-turbo-instruct-0914',
+    temperature: 1,
     max_tokens: 24,
     stream: true,
-    prompt: "Complete the following sentence. Continue coherently and write in spanish: " + prompt,
+    prompt: "Continue the following sentence like an User input: " + prompt,
   });
 
   const data = new experimental_StreamData();
