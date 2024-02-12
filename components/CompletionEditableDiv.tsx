@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { Button } from './ui/button';
 
 export default function CompletionEditableDiv({ children, setChatInput, chatInput }: { children: React.ReactNode; setChatInput: (input: string) => void; chatInput: string }) {
-  const { setInput, input, complete, isLoading } = useCompletion({
+  const { complete, isLoading } = useCompletion({
     api: '/api/completion',
     onFinish(prompt, completion) {
       setCompletionText(completion);
@@ -55,12 +55,8 @@ export default function CompletionEditableDiv({ children, setChatInput, chatInpu
 
   const handleCompletion = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (divRef.current) {
-      setInput(divRef.current.innerText);
-      setUserText(divRef.current.innerText);
-    }
-    setCompletionText('');
-    complete(input);
+    //setCompletionText('');
+    complete(userText);
   }
 
   return (
@@ -69,7 +65,10 @@ export default function CompletionEditableDiv({ children, setChatInput, chatInpu
         contentEditable="plaintext-only"
         className="text-black rounded-lg p-4 mx-auto bg-white min-h-32"
         onKeyDown={handleKeyDown}
-        onInput={() => setChatInput(divRef.current?.firstChild?.textContent || '')}
+        onInput={() => {
+          setChatInput(divRef.current?.firstChild?.textContent || '')
+          setUserText(divRef.current?.firstChild?.textContent || '');
+        }}
         suppressContentEditableWarning={true}
         ref={divRef}
       />
