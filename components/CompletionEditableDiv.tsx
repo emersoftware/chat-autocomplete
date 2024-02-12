@@ -48,6 +48,17 @@ export default function CompletionEditableDiv({ children, setChatInput, chatInpu
   }, [userText, completionText]);
 
   useEffect(() => {
+    const intervalId = setInterval(() => {
+      if(userText.length > 20 && completionText === ''){
+        complete(userText);
+      }
+    }, 5555);
+    
+    return () => clearInterval(intervalId);
+
+  }, [userText, completionText]);
+
+  useEffect(() => {
     if(divRef.current && chatInput === '') {
       divRef.current.innerHTML = '';
     }
