@@ -1,9 +1,7 @@
 "use client";
 
 import { useChat } from "ai/react";
-import { useRef, useState, ReactElement } from "react";
 import type { FormEvent } from "react";
-import type { AgentStep } from "langchain/schema";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { ChatMessageBubble } from "@/components/ChatMessageBubble";
