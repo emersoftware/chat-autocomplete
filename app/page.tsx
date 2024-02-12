@@ -37,7 +37,7 @@ export default function Home(this: any) {
   }
   
   return (
-    <main className="w-full lg:w-1/2 h-screen mx-auto text-white flex flex-col items-center justify-between p-24">
+    <main className="w-full lg:w-[1000px] h-screen mx-auto text-white flex flex-col items-center justify-between p-16">
       <h2 className={`text-3xl mb-8`}> Chat Suggest Autocomplete</h2>
 
       <ScrollArea
@@ -67,7 +67,6 @@ export default function Home(this: any) {
               <span className={chatEndpointIsLoading ? "hidden" : ""}>Enviar</span>
             </Button>
           </CompletionEditableDiv>
-          <span className="text-white text-sm">{input}</span>
         </div>
       </form>
       <Toaster />
