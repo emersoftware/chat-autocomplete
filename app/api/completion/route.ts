@@ -16,16 +16,13 @@ export async function POST(req: Request) {
 
   const response = await openai.completions.create({
     model: 'gpt-3.5-turbo-instruct',
+    temperature: 0.5,
     max_tokens: 24,
     stream: true,
-    prompt: `Complete the following sentence in spanish:
-      User: El amor es un
-      Completion: sentimiento hermoso
-      User: ${prompt}
-      Completion:`,
+    prompt,
   });
 
-  
+  console.log(prompt);
   const data = new experimental_StreamData();
 
   data.append({ test: 'value' });
