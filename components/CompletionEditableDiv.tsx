@@ -52,7 +52,7 @@ export default function CompletionEditableDiv({ children, setChatInput, chatInpu
       if(userText.length > 20 && completionText === ''){
         complete(userText);
       }
-    }, 5555);
+    }, 4444);
     
     return () => clearInterval(intervalId);
 
