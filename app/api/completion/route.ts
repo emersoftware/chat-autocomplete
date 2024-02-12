@@ -19,10 +19,9 @@ export async function POST(req: Request) {
     temperature: 0.5,
     max_tokens: 24,
     stream: true,
-    prompt,
+    prompt: "Write in spanish complete the following sentence: " + prompt,
   });
 
-  console.log(prompt);
   const data = new experimental_StreamData();
 
   data.append({ test: 'value' });
