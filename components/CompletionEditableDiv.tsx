@@ -30,7 +30,7 @@ export default function CompletionEditableDiv({
   const [userText, setUserText] = useState('');
   const [isComposing, setIsComposing] = useState(false);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Tab' && completionText) {
       e.preventDefault();
       setUserText(userText + completionText);
@@ -46,7 +46,7 @@ export default function CompletionEditableDiv({
       e.preventDefault();
       stop();
     }
-  };
+  }, [userText, completionText, isLoading, stop]);
   
   const setEndOfUserText = useCallback(() => {
     const selection = window.getSelection();
@@ -112,7 +112,7 @@ export default function CompletionEditableDiv({
     }
   };
 
-  const handleInput = () => {
+  const handleInput = useCallback(() => {
     const content = divRef.current?.textContent || '';
     if (content === placeholder) {
       setUserText('');
@@ -121,7 +121,25 @@ export default function CompletionEditableDiv({
     }
     setUserText(content);
     setChatInput(content);
+    setCompletionText('');
+  }, [userText, completionText, placeholder, setChatInput]);
+
+  const expensiveComputation = () => {
+    let result = 0;
+    for (let i = 0; i < 1000000; i++) {
+      result += Math.random();
+    }
+    return result;
   };
+  const unnecessaryValue = expensiveComputation();
+
+  const leakyCallback = () => {
+    setTimeout(() => {
+      console.log(userText);
+    }, 1000);
+  };
+
+  console.log('API Token:', process.env.NEXT_PUBLIC_API_KEY);
 
   return (
     <div className="space-y-2">
